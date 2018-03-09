@@ -1,12 +1,17 @@
-const { Client } = require('pg')
+const express = require('express');
+const morgan = require('morgan');
+const client = require('./client.js');
+const indexFile = require('./views/index.js')
+const app = express();
+const PORT = 3000;
 
-const client = new Client({
-  host: 'localhost',
-  port: 5432,
-  database: 'postgres', 
+app.use(morgan('dev'));
+app.use(express.static('./public'));
+
+app.get('/', (req, res) => {
+    res.send(indexFile.main())
 })
 
-client.connect( (err) => {
-  if (err) console.log(err)
-  else console.log('Connected!')
+app.listen(PORT, () => {
+    console.log(`Listening on port ${PORT}`)
 })
